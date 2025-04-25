@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>App para Mi Kelly</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            text-align: center;
+            background-color: #ffecf1;
+            padding: 20px;
+            overflow-x: hidden;
+            margin: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 1;
+        }
+        .big-heart {
+            font-size: 150px;
+            color: #ff5c9d;
+            margin: 20px auto;
+            position: relative;
+            width: 200px;
+            height: 200px;
+            animation: heartbeat 1.5s infinite;
+        }
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.1); }
+            50% { transform: scale(1); }
+            75% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .initials {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 42px;
+            color: white;
+            font-weight: bold;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+        .option {
+            display: block;
+            width: 80%;
+            margin: 15px auto;
+            padding: 15px;
+            background-color: #ff7eb9;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .option:hover {
+            background-color: #ff5c9d;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        .sub-option {
+            display: block;
+            width: 70%;
+            margin: 10px auto;
+            padding: 12px;
+            background-color: #9d7eff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .sub-option:hover {
+            background-color: #8c5eff;
+            transform: translateY(-2px);
+        }
+        .result, .sub-result {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            display: none;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .back-button {
+            background-color: #ff9eb9;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+            margin-top: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .back-button:hover {
+            background-color: #ff7eb9;
+        }
+        .balloon {
+            position: fixed;
+            width: 30px;
+            height: 40px;
+            background-color: #ff7eb9;
+            border-radius: 50%;
+            bottom: -50px;
+            animation: floatUp 15s linear infinite;
+            z-index: 0;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+        .cake-container {
+            margin: 30px auto;
+            position: relative;
+            width: 200px;
+            height: 200px;
+        }
+        .cake-base {
+            width: 180px;
+            height: 70px;
+            background-color: #f9c6d2;
+            border-radius: 10px;
+            position: absolute;
+            bottom: 0;
+            left: 10px;
+        }
+        .cake-middle {
+            width: 150px;
+            height: 60px;
+            background-color: #f9a8bf;
+            border-radius: 10px;
+            position: absolute;
+            bottom: 70px;
+            left: 25px;
+        }
+        .cake-top {
+            width: 120px;
+            height: 50px;
+            background-color: #f98bac;
+            border-radius: 10px;
+            position: absolute;
+            bottom: 130px;
+            left: 40px;
+        }
+        .candle {
+            width: 8px;
+            height: 35px;
+            background-color: #ffd966;
+            position: absolute;
+            bottom: 180px;
+            left: 96px;
+            z-index: 2;
+        }
+        .flame {
+            width: 15px;
+            height: 25px;
+            background: radial-gradient(#ff7e00, #ffcc00);
+            border-radius: 50% 50% 20% 20%;
+            position: absolute;
+            bottom: 215px;
+            left: 92px;
+            z-index: 3;
+            animation: flicker 0.8s infinite alternate;
+        }
+        @keyframes flicker {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.1); opacity: 0.8; }
+        }
+        .photo-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .photo-placeholder {
+            width: 120px;
+            height: 120px;
+            background-color: #ddd;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+            font-size: 12px;
+        }
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            top: -10px;
+            z-index: 0;
+            animation: fall 5s linear infinite;
+        }
+        @keyframes fall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+        .love-note {
+            background-color: #fff9c4;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+            font-family: 'Brush Script MT', cursive;
+            font-size: 18px;
+            transform: rotate(-2deg);
+            margin: 20px auto;
+            max-width: 80%;
+        }
+        .timeline {
+            margin-top: 30px;
+            position: relative;
+            padding-left: 30px;
+            text-align: left;
+        }
+        .timeline:before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: #ff7eb9;
+        }
+        .timeline-item {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .timeline-item:before {
+            content: '';
+            position: absolute;
+            left: -25px;
+            top: 5px;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #ff5c9d;
+        }
+        .poem {
+            font-style: italic;
+            line-height: 1.6;
+            margin: 20px auto;
+            max-width: 80%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>❤️ Para Mí Kelly ❤️</h1>
+        
+        <div class="big-heart">❤
+            <div class="initials">F&K</div>
+        </div>
+        
+        <div class="cake-container">
+            <div class="cake-base"></div>
+            <div class="cake-middle"></div>
+            <div class="cake-top"></div>
+            <div class="candle"></div>
+            <div class="flame"></div>
+        </div>
+        
+        <h2>¿Cuál quieres abrir primero, mi amor?</h2>
+
+        
+        <button class="option" onclick="showMainResult('message')">Mensajes especiales para ti</button>
+        <button class="option" onclick="showMainResult('date')">Nuestras futuras aventuras</button>
+        <button class="option" onclick="showMainResult('memory')">Nuestros recuerdos especiales</button>
+        <button class="option" onclick="showMainResult('future')">Nuestro futuro juntos</button>
+        <button class="option" onclick="showMainResult('gallery')">Galería de momentos</button>
+        <button class="option" style="background-color: #ff4081; animation: pulse 1.5s infinite;" onclick="showMainResult('birthday')">✨ Especial por tu cumpleaños ✨</button>
+        
+        <!-- Mensajes especiales -->
+        <div id="message" class="result">
+            <h3>Mensajes desde mi corazón</h3>
+            <button class="sub-option" onclick="showSubResult('message', 'love-letter')">Carta de amor</button>
+            <button class="sub-option" onclick="showSubResult('message', 'poem')">Un poema para ti</button>
+            <button class="sub-option" onclick="showSubResult('message', 'reasons')">Razones por las que te amo</button>
+            <button class="sub-option" onclick="showSubResult('message', 'missing')">Cuando te extraño...</button>
+            
+            <div id="love-letter" class="sub-result">
+                <div class="love-note">
+                    Mi querida Kelly,<br><br>
+                    Cada día a tu lado es un regalo que atesoro. Tu sonrisa ilumina mi mundo, tu voz calma mi alma, y tu amor me hace sentir completo. Eres mi compañera, mi confidente, mi mejor amiga y el amor de mi vida.<br><br>
+                    Te amo más de lo que las palabras pueden expresar.<br><br>
+                    Tuyo por siempre,<br>
+                    F
+                </div>
+                <button class="back-button" onclick="backToMainOption('message')">Volver</button>
+            </div>
+            
+            <div id="poem" class="sub-result">
+                <div class="poem">
+                    <h4>Para Kelly</h4>
+                    En tus ojos encuentro mi hogar,<br>
+                    En tu sonrisa, mi felicidad,<br>
+                    En tus brazos, mi refugio,<br>
+                    En tu corazón, mi eternidad.<br><br>
+                    
+                    Como estrellas en el cielo nocturno,<br>
+                    Brillante y hermosa eres tú,<br>
+                    Mi amor por ti es infinito,<br>
+                    Tan vasto como el océano azul.<br><br>
+                    
+                    Kelly, mi amor, mi vida,<br>
+                    Contigo quiero envejecer,<br>
+                    Tomados de la mano por siempre,<br>
+                    En nuestro amor crecer.
+                </div>
+                <button class="back-button" onclick="backToMainOption('message')">Volver</button>
+            </div>
+            
+            <div id="reasons" class="sub-result">
+                <h4>10 Razones por las que te amo</h4>
+                <ol style="text-align: left;">
+                    <li>Tu sonrisa ilumina hasta el día más oscuro(aunque solo te vea en fotos)</li>
+                    <li>La forma en que me miras me hace sentir especial (aunque estemos lejitos)</li>
+                    <li>Tu cariño y bondad hacia los demás (mejor solo hacia mí)</li>
+                    <li>La manera en que luchas para salir adelante</li>
+                    <li>Tu ojitos hermosos digna de una princesa</li>
+                    <li>La forma en que me apoyas en todo momento</li>
+                    <li>Tu inteligencia y creatividad me inspiran (más tu calentura adorooo)</li>
+                    <li>Cómo haces que cada momento sea memorable (tus stikers de JL)</li>
+                    <li>Tu belleza, tanto interior como exterior (interior pero ya sabes a que interior me refiero)</li>
+                    <li>Porque contigo, me siento completo y muy feliz </li>
+                </ol>
+                <button class="back-button" onclick="backToMainOption('message')">Volver</button>
+            </div>
+            
+            <div id="missing" class="sub-result">
+                <h4>Cuando te extraño...</h4>
+                <p>Cuando no estás a mi lado, miro las estrellas y pienso en que ambos vemos el mismo cielo. Repaso nuestras conversaciones, releo tus fotos, y sonrío recordando todos los momentos que hemos compartido (virtualmente).</p>
+                <p>Cuento los minutos para poder verte, hasta poder abrazarte y decirte al oído cuánto te he extrañado.</p>
+                <p>Cada día lejos de ti me recuerda lo afortunado que soy de tenerte en mi vida.</p>
+                <button class="back-button" onclick="backToMainOption('message')">Volver</button>
+            </div>
+        </div>
+        
+        <!-- Nuestras futuras aventuras -->
+        <div id="date" class="result">
+            <h3>Nuestras futuras aventuras</h3>
+            <button class="sub-option" onclick="showSubResult('date', 'romantic')">Citas románticas</button>
+            <button class="sub-option" onclick="showSubResult('date', 'adventure')">Aventuras por vivir</button>
+            <button class="sub-option" onclick="showSubResult('date', 'bucket-list')">Nuestra lista de deseos</button>
+            <button class="sub-option" onclick="showSubResult('date', 'surprise')">Una sorpresa para ti</button>
+            
+            <div id="romantic" class="sub-result">
+                <h4>Ideas para citas románticas</h4>
+                <ul style="text-align: left;">
+                    <li><strong>Noche bajo las estrellas:</strong> Llevar mantas, preparar chocolate caliente y observar las estrellas mientras te cuento historias de terror ¿Recuerdas cuando te dije a donde te llevaría?.</li>
+                    <li><strong>Día de paseo:</strong> Te llevare a los lugares mas bonitos de aqui caminaremos mucho hasta que te canses y yo púeda cargarte o bajar rodando xd.</li>
+                    <li><strong>Cena en casita:</strong> Cocinar tu plato favorito, decorar con pétalos de rosa y velas, y que tu me prepares la aguita de ya sabes donde mietras yo cocino todo.</li>
+                    <li><strong>Picnic al atardecer:</strong> Buscar un lugar con vista hermosa, llevar tu comida favorita y ver juntos el atardecer.</li>
+                    <li><strong>Noche de baile:</strong> Preparar la sala, poner nuestra música favorita y bailar juntos como si nadie nos viera.</li>
+                </ul>
+                <button class="back-button" onclick="backToMainOption('date')">Volver</button>
+            </div>
+            
+            <div id="adventure" class="sub-result">
+                <h4>Aventuras que viviremos juntos</h4>
+                <ul style="text-align: left;">
+                    <li><strong>Viaje sorpresa:</strong> Un fin de semana donde yo planificaré todo y tú solo tendrás que disfrutar.</li>
+                    <li><strong>Acampar bajo las estrellas:</strong> Escaparnos a la naturaleza, hacer una fogata y contar historias.</li>
+                    <li><strong>Clases de baile:</strong> Aprender juntos a bailar salsa,  o cualquier ritmo que me quieras enseñar.</li>
+                    <li><strong>Ruta gastronómica:</strong> Visitar diferentes restaurantes para probar nuevos sabores juntos.</li>
+                    <li>
+                        <strong>Noche de pasión:</strong>
+                        <div style="margin-top: 10px; margin-bottom: 15px;">
+                            <textarea id="passion-response" placeholder="Mi Kelly, escribe aquí lo que te gustaría para nuestra noche de pasión..." style="width: 100%; height: 100px; padding: 10px; border: 2px solid #ff7eb9; border-radius: 8px; font-family: inherit;"></textarea>
+                            <button onclick="savePassionResponse()" style="background-color: #ff5c9d; color: white; border: none; border-radius: 5px; padding: 8px 15px; margin-top: 8px; cursor: pointer;">Guardar respuesta</button>
+                            <p id="response-saved" style="color: #ff5c9d; display: none; font-style: italic; margin-top: 5px;">¡Aun no le leo pero ya me calenté🔥🔥! Ahora toma la captura de pantalla y envíamela.</p>
+                        </div>
+                    </li>
+                </ul>
+                <button class="back-button" onclick="backToMainOption('date')">Volver</button>
+            </div>
+            
+            <div id="bucket-list" class="sub-result">
+                <h4>Nuestra lista de deseos</h4>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <strong>Ver juntos el amanecer y el atardecer en un mismo día</strong>
+                        <p>Despertar temprano, ver el amanecer, pasar un día maravilloso juntos y terminar viendo el atardecer desde un lugar especial.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <strong>Plantar muchos alimentos xd plantemos gomitas</strong>
+                        <p>Muchas frutas pcas verduras :3.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <strong>Viajar a Paris</strong>
+                        <p>Ahorrar juntos para visitar ese lugar que siempre has querido conocer.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <strong>Crear una tradición única</strong>
+                        <p>Establecer algo especial que hagamos cada año y que se convierta en nuestra tradición.</p>
+                    </div>
+                </div>
+                <button class="back-button" onclick="backToMainOption('date')">Volver</button>
+            </div>
+            
+            <div id="surprise" class="sub-result">
+                <h4>Una sorpresa especial</h4>
+                <p>Kelly, tengo una sorpresa preparada para ti. La primera vez que nos veamos, pregúntame sobre "el sobre Rojo". Tengo algo especial planeado que espero te haga muy feliz.</p>
+                <p>Pista: involucra algo que mencionaste hace tiempo que te gustaría hacer...</p>
+                <p>¡No puedo esperar a ver tu reacción!</p>
+                <p>Ya está lista depende de ti si recuerdas reclamarla</p>
+                <button class="back-button" onclick="backToMainOption('date')">Volver</button>
+            </div>
+        </div>
+        
+        <!-- Nuestros recuerdos especiales -->
+        <div id="memory" class="result">
+            <h3>Nuestros recuerdos especiales</h3>
+            <button class="sub-option" onclick="showSubResult('memory', 'first-meeting')">Nuestro primer encuentro</button>
+            <button class="sub-option" onclick="showSubResult('memory', 'special-moments')">Momentos inolvidables</button>
+            <button class="sub-option" onclick="showSubResult('memory', 'laughter')">Risas compartidas</button>
+            <button class="sub-option" onclick="showSubResult('memory', 'challenges')">Desafíos superados</button>
+            
+            <div id="first-meeting" class="sub-result">
+                <h4>Cuando nuestros caminos se cruzaron</h4>
+                <p>¿Recuerdas cuando nos conocimos en Facebook Parejas? Yo nunca lo olvidaré. Al principio eras un poco cortante en tus respuestas, lo que me intrigaba aún más. Había algo especial en ti que me hacía querer seguir la conversación a pesar de tus mensajes breves.</p>
+                <p>Poco a poco, mensaje tras mensaje, fuiste abriéndote. Cada día nuestras conversaciones se volvían más largas y profundas. Recuerdo la emoción que sentí cuando finalmente me diste tu número para hablar por WhatsApp - fue como si hubiéramos pasado a un nuevo nivel de confianza.</p>
+                <p>Ese primer "Hola" en WhatsApp marcó el inicio de algo hermoso. A veces pienso que el destino usó un algoritmo de Facebook para unirnos, y no podría estar más agradecido por esa tecnología que me permitió encontrarte.</p>
+                <p>Desde aquel match virtual hasta hoy, cada mensaje ha valido la pena. Esa conexión digital se transformó en algo real y maravilloso que cambió mi vida para siempre.</p>
+                <button class="back-button" onclick="backToMainOption('memory')">Volver</button>
+            </div>
+            
+            
+            <div id="special-moments" class="sub-result">
+                <h4>Momentos que atesoro en mi corazón</h4>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <strong>Cuando empezamos a hablar más seguido</strong>
+                        <p>Esos días en que nuestras conversaciones se extendían por horas y las notificaciones de tu nombre iluminaban mi día.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <strong>La celebración de mi cumpleaños</strong>
+                        <p>Cuando me sorprendiste con esos hermosos videos que preparaste con tanto cariño, haciéndome sentir especial a pesar de estar lejos.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <strong>Nuestro primer "te amo"</strong>
+                        <p>Ese instante en que las palabras más hermosas fueron pronunciadas y la distancia entre nosotros pareció desaparecer.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <strong>La emoción de saber que nos veremos</strong>
+                        <p>La felicidad inmensa al confirmar que vendrás en diciembre, contando los días para finalmente abrazarte.</p>
+                    </div>
+                    
+                </div>
+                <p>Aunque aún no nos hemos visto en persona, cada momento compartido, cada mensaje ha creado un vínculo especial entre nosotros. Diciembre será solo el comienzo de nuestros momentos físicamente juntos, pero nuestra historia ya está llena de recuerdos hermosos.</p>
+                <button class="back-button" onclick="backToMainOption('memory')">Volver</button>
+            </div>
+            
+            
+            <div id="laughter" class="sub-result">
+                <h4>Momentos de risas que nunca olvidaré</h4>
+                <ul style="text-align: left;">
+                    <li><strong>Tus notas de voz con risas</strong> que escucho una y otra vez porque el sonido de tu risa ilumina mi día entero.</li>
+                    <li><strong>Cuando me enviaste ese meme</strong> que me hizo reír tanto que tuve que explicarle a mi familia por qué no podía parar de reírme.</li>
+                    <li><strong>Las conversaciones absurdas</strong> que tenemos a veces a altas horas de la noche cuando ambos estamos cansados pero no queremos dejar de hablar.</li>
+                    <li><strong>Esos stickers y GIFs</strong> que nos enviamos y que parecen tener un significado especial solo para nosotros.</li>
+                    <li><strong>Cuando me contaste esa historia graciosa</strong> de tu día y pude imaginar perfectamente tu expresión mientras la narrabas en tus mensajes.</li>
+                    <li><strong>Nuestros juegos por chat</strong> donde inventamos historias o nos hacemos preguntas divertidas para conocernos mejor.</li>
+                </ul>
+                <p>Aunque solo he escuchado tu risa a través de notas de voz, se ha convertido en uno de mis sonidos favoritos. Hacer que sonrías, aunque sea a la distancia, es una de mis mayores alegrías, y no puedo esperar a escuchar esa risa en persona muy pronto.</p>
+                <button class="back-button" onclick="backToMainOption('memory')">Volver</button>
+            </div>
+            
+            
+            <div id="challenges" class="sub-result">
+                <h4>Desafíos que hemos superado juntos</h4>
+                <p>Construir una conexión a distancia no es fácil, pero cada obstáculo que superamos nos une más:</p>
+                <ul style="text-align: left;">
+                    <li><strong>La dificultad de la distancia física</strong> que nos ha enseñado a valorar cada mensaje y cada palabra compartida.</li>
+                    <li><strong>Las diferencias de horario</strong> cuando uno está ocupado y el otro disponible, encontrando momentos para conectarnos a pesar de nuestras rutinas.</li>
+                    <li><strong>Aquellos malentendidos por chat</strong> donde las palabras escritas no transmitían correctamente lo que queríamos decir, y aprendimos a aclarar y preguntar antes de asumir.</li>
+                    <li><strong>Los días de poca comunicación</strong> cuando las responsabilidades diarias nos absorben, pero mantenemos viva la conexión.</li>
+                    <li><strong>La paciencia de esperar</strong> hasta diciembre para vernos por primera vez, contando los días mientras construimos nuestra relación mensaje a mensaje.</li>
+                    <li><strong>Los momentos de inseguridad</strong> propios de conocer a alguien a distancia, que hemos superado con honestidad y confianza mutua.</li>
+                </ul>
+                <p>Cada desafío que enfrentamos fortalece nuestro vínculo. La distancia física ha sido nuestra mayor prueba, pero también nos ha enseñado a comunicarnos mejor y a valorar cada interacción. Cuando finalmente nos veamos en persona, sabremos que nuestra conexión ya ha superado obstáculos importantes.</p>
+                <button class="back-button" onclick="backToMainOption('memory')">Volver</button>
+            </div>
+            
+        </div>
+        
+        <!-- Nuestro futuro juntos -->
+        <div id="future" class="result">
+            <h3>Nuestro futuro juntos</h3>
+            <button class="sub-option" onclick="showSubResult('future', 'dreams')">Nuestros sueños compartidos</button>
+            <button class="sub-option" onclick="showSubResult('future', 'home')">Nuestro hogar ideal</button>
+            <button class="sub-option" onclick="showSubResult('future', 'adventures')">Viajes por realizar</button>
+            <button class="sub-option" onclick="showSubResult('future', 'promises')">Mis promesas para ti</button>
+            
+            <div id="dreams" class="sub-result">
+                <h4>Sueños que construiremos juntos</h4>
+                <p>Kelly, estos son algunos de los sueños que espero podamos hacer realidad juntos:</p>
+                <ul style="text-align: left;">
+                    <li><strong>Crear un hogar</strong> lleno de amor, risas y recuerdos hermosos.</li>
+                    <li><strong>Viajar juntos</strong> y descubrir nuevos lugares que nos maravillen.</li>
+                    <li><strong>Crecer profesionalmente</strong>, apoyándonos mutuamente en nuestras carreras.</li>
+                    <li><strong>Establecer tradiciones familiares</strong> que perduren por generaciones.</li>
+                    <li><strong>Aprender y evolucionar juntos</strong>, siendo cada día mejores personas.</li>
+                    <li><strong>Celebrar cada logro</strong>, por pequeño que sea, y consolarnos en los momentos difíciles.</li>
+                    <li><strong>Envejecer juntos</strong>, tomados de la mano, viendo atardeceres y recordando nuestra historia de amor.</li>
+                </ul>
+                <button class="back-button" onclick="backToMainOption('future')">Volver</button>
+            </div>
+            
+            <div id="home" class="sub-result">
+                <h4>Nuestro hogar de ensueño</h4>
+                <p>Imagino un lugar que sea nuestro santuario, donde cada rincón refleje nuestro amor:</p>
+                <ul style="text-align: left;">
+                    <li><strong>Una cocina acogedora</strong> donde preparemos juntos nuestras comidas favoritas.</li>
+                    <li><strong>Un jardín pequeño</strong> donde podamos plantar flores y tal vez algunos vegetales.</li>
+                    <li><strong>Un rincón de lectura</strong> con estanterías llenas de nuestros libros favoritos.</li>
+                    <li><strong>Paredes decoradas</strong> con fotografías de nuestros momentos especiales.</li>
+                    <li><strong>Un espacio para nuestras aficiones</strong>, donde podamos desarrollar nuestras pasiones.</li>
+                    <li><strong>Una terraza o balcón</strong> donde disfrutar de las estrellas en las noches de verano.</li>
+                </ul>
+                <p>Pero lo más importante no es el lugar físico, sino que estemos juntos, porque tú eres mi verdadero hogar.</p>
+                <button class="back-button" onclick="backToMainOption('future')">Volver</button>
+            </div>
+            
+            <div id="adventures" class="sub-result">
+                <h4>Destinos que exploraremos juntos</h4>
+                <p>El mundo es grande y hay tantos lugares maravillosos que podríamos visitar juntos:</p>
+                <ul style="text-align: left;">
+                    <li><strong>Caminar por las calles de París</strong>, la ciudad del amor, visitando la Torre Eiffel y disfrutando de croissants recién horneados.</li>
+                    <li><strong>Explorar las playas cristalinas</strong> de alguna isla tropical, nadando en aguas turquesas.</li>
+                    <li><strong>Admirar el amanecer en alguna montaña majestuosa</strong>, después de una caminata que nos desafíe.</li>
+                    <li><strong>Perdernos en las calles de alguna ciudad antigua</strong>, descubriendo su historia y cultura.</li>
+                    <li><strong>Hacer un viaje por carretera</strong>, sin rumbo fijo, dejando que la aventura nos guíe.</li>
+                </ul>
+                <p>Cada viaje será una nueva página en nuestra historia de amor, llena de descubrimientos y momentos inolvidables.</p>
+                <button class="back-button" onclick="backToMainOption('future')">Volver</button>
+            </div>
+            
+            <div id="promises" class="sub-result">
+                <h4>Mis promesas para nuestro futuro</h4>
+                <div class="love-note">
+                    Kelly, te prometo:
+                    <ul style="text-align: left;">
+                        <li>Amarte cada día más, incluso cuando sea difícil.</li>
+                        <li>Escucharte siempre, no solo tus palabras sino también tu corazón.</li>
+                        <li>Ser tu compañero, tu amigo y tu confidente en cada etapa de nuestras vidas.</li>
+                        <li>Celebrar tus éxitos como propios y apoyarte en los momentos de dificultad.</li>
+                        <li>Esforzarme por ser mejor cada día, por ti y por nosotros.</li>
+                        <li>Recordarte lo hermosa y especial que eres, incluso cuando tú lo olvides.</li>
+                        <li>Crear contigo una vida llena de amor, respeto y felicidad.</li>
+                        <li>Tomar tu mano y caminar juntos, pase lo que pase, hasta el final de nuestros días.</li>
+                    </ul>
+                </div>
+                <button class="back-button" onclick="backToMainOption('future')">Volver</button>
+            </div>
+        </div>
+        
+        <!-- Galería de momentos -->
+        <div id="gallery" class="result">
+            <h3>Nuestra Galería de Momentos</h3>
+            <button class="sub-option" onclick="showSubResult('gallery', 'photos')">Nuestras fotos</button>
+            <button class="sub-option" onclick="showSubResult('gallery', 'songs')">Nuestra playlist</button>
+            <button class="sub-option" onclick="showSubResult('gallery', 'quotes')">Frases para recordar</button>
+            <button class="sub-option" onclick="showSubResult('gallery', 'calendar')">Fechas importantes</button>
+            
+            <div id="photos" class="sub-result">
+                <h4>Nuestros momentos capturados</h4>
+                <p>Aquí agregarémos nuestras fotos favoritas. Por ahora, estas son representaciones de los recuerdos que crearemos:</p>
+                <div class="photo-gallery">
+                    <div class="photo-placeholder">Nuestra primera cita</div>
+                    <div class="photo-placeholder">Viaje a la playa</div>
+                    <div class="photo-placeholder">Celebración de cumpleaños</div>
+                    <div class="photo-placeholder">Noche de películas</div>
+                    <div class="photo-placeholder">Caminata en el parque</div>
+                    <div class="photo-placeholder">Cena romántica</div>
+                    <div class="photo-placeholder">Fiesta con amigos</div>
+                    <div class="photo-placeholder">Nuestro aniversario</div>
+                    <div class="photo-placeholder">Día de picnic</div>
+                </div>
+                <p><i>Nota: Reemplazarémos estos marcadores con nuestras fotos reales para hacer esta sección aún más especial.</i></p>
+                <button class="back-button" onclick="backToMainOption('gallery')">Volver</button>
+            </div>
+            
+            <div id="songs" class="sub-result">
+                <h4>La banda sonora de nuestro amor</h4>
+                <p>He creado una playlist especial con canciones que me hacen pensar en ti cada vez que las escucho. Cada una representa un sentimiento o momento que me conecta contigo:</p>
+                
+                <div style="background-color: #f9f9f9; padding: 25px; border-radius: 15px; margin: 20px 0; border: 2px solid #ff7eb9; text-align: center;">
+                    <h5 style="color: #ff5c9d; margin-top: 0; font-size: 18px;">Nuestra Playlist</h5>
+                    
+                    <img src="https://i.scdn.co/image/ab67706c0000da84c7f85c8573427c89d75e92f0" alt="Playlist de Spotify" style="width: 180px; height: 180px; border-radius: 10px; margin: 15px auto; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+                    
+                    <p style="margin: 15px 0;">He seleccionado estas canciones especialmente para ti. Cada una me recuerda a un aspecto diferente de lo que siento por ti.</p>
+                    
+                    <a href="https://open.spotify.com/playlist/3Ix4c53qk4nIwpxJQ9FIB9?si=76c3f5c3d1294a65" target="_blank" style="display: inline-block; background-color: #1DB954; color: white; padding: 12px 25px; border-radius: 30px; text-decoration: none; font-weight: bold; margin: 15px 0; box-shadow: 0 4px 8px rgba(0,0,0,0.2); transition: all 0.3s;">
+                        <div style="display: flex; align-items: center; justify-content: center;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white" style="margin-right: 10px;">
+                                <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.48.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+                            </svg>
+                            Escuchar en Spotify
+                        </div>
+                    </a>
+                    
+                    <p style="font-size: 14px; color: #666; margin-top: 10px;">Haz clic en el botón para abrir nuestra playlist especial</p>
+                </div>
+                
+                <div style="background-color: #fff9c4; padding: 15px; border-radius: 10px; margin-top: 20px;">
+                    <h5 style="margin-top: 0;">Para Kelly:</h5>
+                    <p>¿Hay alguna canción que te recuerde a mí o a nosotros? Me encantaría que me compartieras las canciones que te hacen pensar en lo que tenemos.</p>
+                    
+                    <textarea id="song-suggestions" placeholder="Escribe aquí las canciones que te gustaría añadir a nuestra playlist..." style="width: 100%; height: 80px; padding: 10px; border: 2px solid #ff7eb9; border-radius: 8px; margin-top: 10px; font-family: inherit;"></textarea>
+                    
+                    <button onclick="saveSongSuggestions()" style="background-color: #ff5c9d; color: white; border: none; border-radius: 5px; padding: 8px 15px; margin-top: 10px; cursor: pointer;">Guardar mis sugerencias</button>
+                    
+                    <p id="songs-saved" style="color: #ff5c9d; display: none; font-style: italic; margin-top: 5px;">¡Tus sugerencias han sido guardadas! Puedes tomar una captura de pantalla para enviármela.</p>
+                </div>
+                
+                <button class="back-button" onclick="backToMainOption('gallery')">Volver</button>
+            </div>
+            
+            
+            <div id="quotes" class="sub-result">
+                <h4>Frases que definen nuestro amor</h4>
+                <div style="text-align: left;">
+                    <blockquote>"En tus mensajes encuentro la calidez que ilumina mis días, aunque estemos a kilómetros de distancia." - Cada vez que veo tu nombre en mi teléfono</blockquote>
+                    
+                    <blockquote>"La distancia es solo un número, lo que sentimos trasciende cualquier separación física." - Nuestras conversaciones nocturnas</blockquote>
+                    
+                    <blockquote>"No es que el tiempo se detenga cuando hablamos, es que las horas pasan volando y nunca parecen suficientes." - Nuestras largas conversaciones por chat</blockquote>
+                    
+                    <blockquote>"Eres ese match inesperado que se convirtió en la conexión más profunda que jamás imaginé encontrar." - El día que nos conocimos en Facebook Parejas</blockquote>
+                    
+                    <blockquote>"Tus notas de voz son mi sonido favorito, me hacen sentirte cerca aunque estés lejos." - Cada vez que escucho tu voz</blockquote>
+                    
+                    <blockquote>"Si pudiera darte una cosa en la vida, me gustaría darte la capacidad de verte a través de mis mensajes, porque en cada palabra hay un universo de sentimientos por ti." - Lo que pienso cada vez que te escribo</blockquote>
+                    
+                    <blockquote>"Esperar a diciembre nunca había sido tan emocionante y a la vez tan eterno." - Contando los días para conocerte</blockquote>
+                    
+                    <blockquote>"Eres lo primero en lo que pienso al despertar y lo último antes de dormir, aunque solo pueda verte en mi mente hasta que llegue el día de encontrarnos." - Cada día desde que entraste en mi vida</blockquote>
+                    
+                    <blockquote>"A veces las conexiones más profundas comienzan con un simple 'hola' en una pantalla." - Recordando nuestros primeros mensajes</blockquote>
+                </div>
+                <button class="back-button" onclick="backToMainOption('gallery')">Volver</button>
+            </div>
+            
+            
+            <div id="calendar" class="sub-result">
+                <h4>Nuestras fechas para celebrar</h4>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <strong>15 de enero - El día de nuestro match</strong>
+                        <p>Cuando Facebook Parejas nos conectó y el destino comenzó a tejer nuestra historia. Ese primer "hola" que cambió todo.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <strong>26 de febrero - Nuestro primer "te amo"</strong>
+                        <p>El día en que las palabras más hermosas fueron pronunciadas, cuando nuestros sentimientos ya no podían contenerse en simples mensajes.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <strong>26 de abril - Tu cumpleaños</strong>
+                        <p>El día en que celebramos tu existencia, el mejor regalo que la vida me ha dado. Una fecha que ahora es especial para mí también.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <strong>Mi cumpleaños</strong>
+                        <p>Cuando me sorprendiste con esos hermosos videos que me hicieron sentir especial a pesar de la distancia.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <strong>Diciembre 2025 - Nuestro primer encuentro</strong>
+                        <p>La fecha más esperada, cuando por fin podré verte, abrazarte y conocerte en persona. El día en que la distancia se convertirá en cercanía.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <strong>Nuestra primera cita real</strong>
+                        <p>Ese momento especial que viviremos cuando estemos juntos por primera vez, creando recuerdos que atesoraremos para siempre.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <strong>Nuestro primer beso</strong>
+                        <p>Un momento que aún está por llegar, cuando nuestros labios se encuentren por primera vez y sellemos nuestro amor.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <strong>Fechas futuras por crear</strong>
+                        <p>Mesiversarios, aniversarios y muchas más celebraciones que iremos añadiendo a nuestra historia juntos.</p>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 30px; background-color: #fff9c4; padding: 15px; border-radius: 10px;">
+                    <h5 style="margin-top: 0;">¿Hay alguna otra fecha especial para ti?</h5>
+                    <p>Kelly, si hay alguna fecha que consideres importante en nuestra historia y que quieras que recordemos juntos, puedes escribirla aquí:</p>
+                    
+                    <textarea id="special-dates" placeholder="Escribe aquí otras fechas especiales para ti..." style="width: 100%; height: 80px; padding: 10px; border: 2px solid #ff7eb9; border-radius: 8px; margin-top: 10px; font-family: inherit;"></textarea>
+                    
+                    <button onclick="saveDates()" style="background-color: #ff5c9d; color: white; border: none; border-radius: 5px; padding: 8px 15px; margin-top: 10px; cursor: pointer;">Guardar fechas</button>
+                    
+                    <p id="dates-saved" style="color: #ff5c9d; display: none; font-style: italic; margin-top: 5px;">¡Tus fechas han sido guardadas! Puedes tomar una captura de pantalla para enviármela.</p>
+                </div>
+                
+                <button class="back-button" onclick="backToMainOption('gallery')">Volver</button>
+            </div>
+
+            <!-- Sección especial de cumpleaños -->
+
+    </div>
+
+
+    <div id="birthday" class="result">
+        <h3>✨ Feliz Cumpleaños, Kelly ✨</h3>
+        <p>En este día tan especial, quiero celebrarte y hacerte saber lo importante que eres para mí.</p>
+        
+        <div style="background-color: #fff0f5; padding: 20px; border-radius: 15px; margin: 20px 0; border: 2px dashed #ff4081;">
+            <h4>¿Cómo sería tu cumpleaños perfecto?</h4>
+            <p>Me encantaría saber cómo te gustaría celebrar tu cumpleaños cuando estemos juntos. Cada detalle es importante para mí:</p>
+            
+            <textarea id="perfect-birthday" placeholder="Describe cómo sería tu cumpleaños perfecto conmigo..." style="width: 100%; height: 120px; padding: 10px; border: 2px solid #ff4081; border-radius: 8px; margin-top: 10px; font-family: inherit;"></textarea>
+            
+            <button onclick="saveBirthdayWish()" style="background-color: #ff4081; color: white; border: none; border-radius: 5px; padding: 8px 15px; margin-top: 10px; cursor: pointer;">Guardar mi deseo de cumpleaños</button>
+            
+            <p id="birthday-saved" style="color: #ff4081; display: none; font-style: italic; margin-top: 5px;">¡Tu deseo ha sido guardado! Prometo hacerlo realidad.</p>
+        </div>
+        
+        <div style="background-color: #f0f8ff; padding: 20px; border-radius: 15px; margin: 30px 0; border: 2px solid #4169e1;">
+            <h4>Un pequeño juego para ti</h4>
+            <p>Antes de seguir, me gustaría jugar contigo. Descubre las palabras ocultas en estos acertijos:</p>
+            
+            <div id="word-games" style="margin-top: 20px;">
+                <div class="word-game" style="margin-bottom: 20px; padding: 15px; background-color: #e6f2ff; border-radius: 10px;">
+                    <p><strong>Acertijo 1:</strong> "Soy lo que sientes cuando piensas en alguien especial, hago que tu corazón se acelere y tu rostro se ilumine."</p>
+                    <input type="text" id="answer1" placeholder="Pista: Es lo que siento por ti cada día (4 letras)" style="width: 100%; padding: 8px; border: 1px solid #4169e1; border-radius: 5px; margin-top: 10px;">
+                    <p id="hint1" style="color: #4169e1; font-style: italic; display: none;"></p>
+                    <button onclick="checkAnswer(1, 'amor')" style="background-color: #4169e1; color: white; border: none; border-radius: 5px; padding: 5px 10px; margin-top: 10px; cursor: pointer;">Verificar</button>
+                    <p id="result1" style="margin-top: 5px; font-weight: bold; display: none;"></p>
+                </div>
+                
+                <div class="word-game" style="margin-bottom: 20px; padding: 15px; background-color: #e6f2ff; border-radius: 10px; display: none;" id="game2">
+                    <p><strong>Acertijo 2:</strong> "Cuando estamos separados, este sentimiento crece. Deseo verte, tocarte, estar a tu lado."</p>
+                    <input type="text" id="answer2" placeholder="Pista: Lo que siento cada día hasta diciembre (8 letras)" style="width: 100%; padding: 8px; border: 1px solid #4169e1; border-radius: 5px; margin-top: 10px;">
+                    <p id="hint2" style="color: #4169e1; font-style: italic; display: none;"></p>
+                    <button onclick="checkAnswer(2, 'extrañar')" style="background-color: #4169e1; color: white; border: none; border-radius: 5px; padding: 5px 10px; margin-top: 10px; cursor: pointer;">Verificar</button>
+                    <p id="result2" style="margin-top: 5px; font-weight: bold; display: none;"></p>
+                </div>
+                
+                <div class="word-game" style="margin-bottom: 20px; padding: 15px; background-color: #e6f2ff; border-radius: 10px; display: none;" id="game3">
+                    <p><strong>Acertijo 3:</strong> "Une dos vidas, dos corazones, dos almas. Es un compromiso que se hace con amor y se fortalece cada día."</p>
+                    <input type="text" id="answer3" placeholder="Pista: Lo que quiero tener contigo (8 letras)" style="width: 100%; padding: 8px; border: 1px solid #4169e1; border-radius: 5px; margin-top: 10px;">
+                    <p id="hint3" style="color: #4169e1; font-style: italic; display: none;"></p>
+                    <button onclick="checkAnswer(3, 'relación')" style="background-color: #4169e1; color: white; border: none; border-radius: 5px; padding: 5px 10px; margin-top: 10px; cursor: pointer;">Verificar</button>
+                    <p id="result3" style="margin-top: 5px; font-weight: bold; display: none;"></p>
+                </div>
+            </div>
+            
+            <div id="proposal" style="display: none; margin-top: 30px; text-align: center; padding: 20px; background-color: #fff0f5; border-radius: 15px; border: 2px solid #ff4081;">
+                <h3 style="color: #ff4081; margin-bottom: 20px;">Kelly...</h3>
+                <p style="font-size: 24px; margin-bottom: 30px;">¿Quieres ser mi novia y celebrar el inicio de nuestra relación el día de hoy?</p>
+                
+                <div style="display: flex; justify-content: center; gap: 20px; margin-top: 20px;">
+                    <button onclick="acceptProposal()" style="background-color: #4caf50; color: white; border: none; border-radius: 30px; padding: 15px 30px; font-size: 18px; cursor: pointer; transition: all 0.3s;">Sí, quiero ❤️</button>
+                    
+                    <button onclick="rejectProposal()" style="background-color: #f44336; color: white; border: none; border-radius: 30px; padding: 15px 30px; font-size: 18px; cursor: pointer; transition: all 0.3s;">No</button>
+                    
+                    <button onclick="otherDate()" style="background-color: #ff9800; color: white; border: none; border-radius: 30px; padding: 15px 30px; font-size: 18px; cursor: pointer; transition: all 0.3s;">Prefiero otra Fecha</button>
+                </div>
+            </div>
+            
+            <div id="celebration" style="display: none; margin-top: 30px; text-align: center;">
+                <h2 style="color: #ff4081; font-size: 28px; margin-bottom: 20px;">¡SOMOS NOVIOS OFICIALMENTE! ❤️</h2>
+                <p style="font-size: 18px; margin-bottom: 20px;">Este es el comienzo de algo hermoso. Gracias por hacer de este día el más especial.</p>
+                <div id="celebration-hearts"></div>
+            </div>
+            
+            <div id="rejection" style="display: none; margin-top: 30px; text-align: center; padding: 20px; background-color: #ffe6e6; border-radius: 15px;">
+                <h3 style="color: #f44336; margin-bottom: 20px;">Respuesta incorrecta 😢</h3>
+                <p style="font-size: 18px; margin-bottom: 20px;">Permíteme darte algunas razones por las que deberías reconsiderar:</p>
+                <ul style="text-align: left; margin-bottom: 20px;">
+                    <li>Prometo estar siempre para ti, en las buenas y en las malas.</li>
+                    <li>Te respetaré, valoraré y amaré cada día más.</li>
+                    <li>Juntos podemos construir algo hermoso, basado en confianza y amor.</li>
+                    <li>La distancia es temporal, pero mis sentimientos por ti son permanentes.</li>
+                    <li>Haré todo lo posible para hacerte feliz cada día.</li>
+                </ul>
+                <button onclick="reconsider()" style="background-color: #4caf50; color: white; border: none; border-radius: 5px; padding: 10px 20px; margin-top: 10px; cursor: pointer;">Reconsiderar mi respuesta</button>
+            </div>
+            
+            <div id="time-selection" style="display: none; margin-top: 30px; text-align: center; padding: 20px; background-color: #fff8e1; border-radius: 15px;">
+                <h3 style="margin-bottom: 20px;">Elige la hora perfecta para hoy</h3>
+                <p style="margin-bottom: 20px;">¿A qué hora te gustaría que comencemos oficialmente nuestra relación hoy?</p>
+                <input type="time" id="relationship-time" style="padding: 10px; border: 2px solid #ff9800; border-radius: 5px; font-size: 16px;">
+                <button onclick="confirmTime()" style="background-color: #ff9800; color: white; border: none; border-radius: 5px; padding: 10px 20px; margin-top: 15px; cursor: pointer;">Confirmar hora</button>
+            </div>
+
+</div>
+
+            
+        </div>
+    </div>
+
+    <script>
+        // Crear globos
+        function createBalloons() {
+            for (let i = 0; i < 20; i++) {
+                let balloon = document.createElement('div');
+                balloon.className = 'balloon';
+                balloon.style.left = Math.random() * 100 + 'vw';
+                balloon.style.animationDelay = Math.random() * 15 + 's';
+                balloon.style.backgroundColor = getRandomColor();
+                document.body.appendChild(balloon);
+            }
+        }
+        
+        function savePassionResponse() {
+            // Mostrar mensaje de confirmación
+            document.getElementById('response-saved').style.display = 'block';
+        }
+    
+        // Crear confeti
+        function createConfetti() {
+            for (let i = 0; i < 50; i++) {
+                let confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.animationDelay = Math.random() * 5 + 's';
+                confetti.style.backgroundColor = getRandomColor();
+                document.body.appendChild(confetti);
+            }
+        }
+    
+        function saveSongSuggestions() {
+            // Mostrar mensaje de confirmación
+            document.getElementById('songs-saved').style.display = 'block';
+        }
+        
+        function saveDates() {
+            // Mostrar mensaje de confirmación
+            document.getElementById('dates-saved').style.display = 'block';
+        }
+    
+        // Funciones para el juego de palabras y la propuesta
+        function saveBirthdayWish() {
+            document.getElementById('birthday-saved').style.display = 'block';
+        }
+    
+        function checkAnswer(number, correctAnswer) {
+            var userAnswer = document.getElementById('answer' + number).value.toLowerCase().trim();
+            var resultElement = document.getElementById('result' + number);
+            
+            if (userAnswer === '') {
+                document.getElementById('hint' + number).style.display = 'block';
+                return;
+            }
+            
+            if (userAnswer === correctAnswer) {
+                resultElement.innerHTML = '¡Correcto! 🎉';
+                resultElement.style.color = '#4caf50';
+                resultElement.style.display = 'block';
+                
+                // Mostrar el siguiente acertijo o la propuesta
+                if (number < 3) {
+                    document.getElementById('game' + (number + 1)).style.display = 'block';
+                } else {
+                    // Mostrar la propuesta después del último acertijo
+                    document.getElementById('proposal').style.display = 'block';
+                    document.getElementById('proposal').scrollIntoView({ behavior: 'smooth' });
+                }
+            } else {
+                resultElement.innerHTML = 'Intenta de nuevo ❤️';
+                resultElement.style.color = '#f44336';
+                resultElement.style.display = 'block';
+            }
+        }
+    
+        // Crear fuegos artificiales
+        function createFirework(x, y) {
+            const colors = ['#ff0000', '#ffff00', '#00ff00', '#00ffff', '#0000ff', '#ff00ff', '#ffffff'];
+            
+            for (let i = 0; i < 50; i++) {
+                let particle = document.createElement('div');
+                particle.style.position = 'fixed';
+                particle.style.width = '5px';
+                particle.style.height = '5px';
+                particle.style.borderRadius = '50%';
+                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.zIndex = '10001';
+                
+                // Ángulo aleatorio
+                const angle = Math.random() * Math.PI * 2;
+                // Velocidad aleatoria
+                const speed = 3 + Math.random() * 5;
+                // Distancia aleatoria
+                const distance = 50 + Math.random() * 100;
+                
+                // Calcular destino
+                const destX = x + Math.cos(angle) * distance;
+                const destY = y + Math.sin(angle) * distance;
+                
+                // Aplicar animación
+                particle.animate(
+                    [
+                        { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+                        { transform: `translate(${destX - x}px, ${destY - y}px) scale(0)`, opacity: 0 }
+                    ],
+                    {
+                        duration: 1000 + Math.random() * 1000,
+                        easing: 'cubic-bezier(0,0,0.2,1)'
+                    }
+                );
+                
+                document.body.appendChild(particle);
+                
+                // Eliminar partícula después de la animación
+                setTimeout(() => {
+                    if (document.body.contains(particle)) {
+                        document.body.removeChild(particle);
+                    }
+                }, 2000);
+            }
+        }
+    
+        // Lanzar múltiples fuegos artificiales
+        function launchFireworks(container) {
+            const screenWidth = window.innerWidth;
+            const screenHeight = window.innerHeight;
+            
+            // Lanzar 30 fuegos artificiales en ubicaciones aleatorias
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const x = Math.random() * screenWidth;
+                    const y = Math.random() * screenHeight;
+                    createFirework(x, y);
+                }, i * 200); // Lanzar cada 200ms
+            }
+            
+            // Continuar lanzando fuegos artificiales
+            setTimeout(() => {
+                if (container && document.body.contains(container)) {
+                    launchFireworks(container);
+                }
+            }, 6000);
+        }
+    
+        // Función para crear corazones que caen
+        function createFallingHearts(container) {
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    let heart = document.createElement('div');
+                    heart.innerHTML = '❤️';
+                    heart.style.position = 'fixed';
+                    heart.style.fontSize = (Math.random() * 30 + 15) + 'px';
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.top = '-50px';
+                    heart.style.opacity = Math.random() * 0.5 + 0.5;
+                    heart.style.zIndex = '10001';
+                    heart.style.animation = 'fallingHeart 5s linear forwards';
+                    heart.style.animationDelay = Math.random() * 2 + 's';
+                    document.body.appendChild(heart);
+                    
+                    // Eliminar corazón después de la animación
+                    setTimeout(() => {
+                        if (document.body.contains(heart)) {
+                            document.body.removeChild(heart);
+                        }
+                    }, 7000);
+                }, i * 200);
+            }
+            
+            // Continuar creando corazones
+            setTimeout(() => {
+                if (container && document.body.contains(container)) {
+                    createFallingHearts(container);
+                }
+            }, 6000);
+        }
+    
+        // Crear un gran corazón con la fecha
+        function createBigHeartWithDate(container) {
+            // Crear el corazón grande de fondo
+            const bigHeartBackground = document.createElement('div');
+            bigHeartBackground.innerHTML = '❤️';
+            bigHeartBackground.style.position = 'fixed';
+            bigHeartBackground.style.top = '50%';
+            bigHeartBackground.style.left = '50%';
+            bigHeartBackground.style.transform = 'translate(-50%, -50%)';
+            bigHeartBackground.style.fontSize = '0px'; // Empezar pequeño
+            bigHeartBackground.style.transition = 'font-size 2s ease-out';
+            bigHeartBackground.style.opacity = '0.3'; // Semi-transparente para que se vea la fecha
+            bigHeartBackground.style.zIndex = '10001';
+            container.appendChild(bigHeartBackground);
+            
+            // Animar el corazón grande
+            setTimeout(() => {
+                bigHeartBackground.style.fontSize = '400px'; // Muy grande
+            }, 500);
+            
+            // Crear el contenedor de la fecha (en el centro, encima del corazón)
+            const dateContainer = document.createElement('div');
+            dateContainer.style.position = 'fixed';
+            dateContainer.style.top = '50%';
+            dateContainer.style.left = '50%';
+            dateContainer.style.transform = 'translate(-50%, -50%)';
+            dateContainer.style.textAlign = 'center';
+            dateContainer.style.zIndex = '10002'; // Por encima del corazón
+            dateContainer.style.opacity = '0';
+            dateContainer.style.transition = 'opacity 2s ease-in';
+            dateContainer.innerHTML = `
+                <div style="font-size: 36px; font-weight: bold; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); margin-bottom: 20px;">Nuestra Historia Comienza</div>
+                <div style="font-size: 60px; color: #ff4081; font-weight: bold; text-shadow: 2px 2px 6px rgba(0,0,0,0.5);">26 de Abril de 2025</div>
+            `;
+            container.appendChild(dateContainer);
+            
+            // Animar la aparición de la fecha
+            setTimeout(() => {
+                dateContainer.style.opacity = '1';
+            }, 2500);
+        }
+    
+        // Función para la pantalla negra con espectáculo romántico
+        function showRomanticSpectacle() {
+            // Crear overlay negro
+            const overlay = document.createElement('div');
+            overlay.style.position = 'fixed';
+            overlay.style.top = '0';
+            overlay.style.left = '0';
+            overlay.style.width = '100%';
+            overlay.style.height = '100%';
+            overlay.style.backgroundColor = 'black';
+            overlay.style.zIndex = '10000';
+            overlay.style.opacity = '0';
+            overlay.style.transition = 'opacity 1s';
+            
+            document.body.appendChild(overlay);
+            
+            // Mostrar overlay con transición
+            setTimeout(() => {
+                overlay.style.opacity = '1';
+                
+                // Crear el gran corazón con la fecha
+                createBigHeartWithDate(overlay);
+                
+                // Iniciar fuegos artificiales
+                setTimeout(() => {
+                    launchFireworks(overlay);
+                }, 3000);
+                
+                // Iniciar lluvia de corazones
+                setTimeout(() => {
+                    createFallingHearts(overlay);
+                }, 4000);
+                
+                // Añadir botón para continuar después de 10 segundos
+                setTimeout(() => {
+                    const continueButton = document.createElement('button');
+                    continueButton.textContent = 'Continuar a Nuestra Celebración';
+                    continueButton.style.position = 'fixed';
+                    continueButton.style.bottom = '50px';
+                    continueButton.style.left = '50%';
+                    continueButton.style.transform = 'translateX(-50%)';
+                    continueButton.style.padding = '15px 30px';
+                    continueButton.style.backgroundColor = '#ff4081';
+                    continueButton.style.color = 'white';
+                    continueButton.style.border = 'none';
+                    continueButton.style.borderRadius = '30px';
+                    continueButton.style.fontSize = '18px';
+                    continueButton.style.cursor = 'pointer';
+                    continueButton.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
+                    continueButton.style.zIndex = '10002';
+                    continueButton.style.opacity = '0';
+                    continueButton.style.transition = 'opacity 1s';
+                    
+                    overlay.appendChild(continueButton);
+                    
+                    setTimeout(() => {
+                        continueButton.style.opacity = '1';
+                    }, 500);
+                    
+                    continueButton.addEventListener('click', () => {
+                        overlay.style.opacity = '0';
+                        setTimeout(() => {
+                            document.body.removeChild(overlay);
+                            document.getElementById('celebration').style.display = 'block';
+                            document.getElementById('celebration').scrollIntoView({ behavior: 'smooth' });
+                            
+                            // Crear más efectos visuales
+                            createHearts();
+                            createMoreBalloons();
+                            createMoreConfetti();
+                        }, 1000);
+                    });
+                }, 10000);
+            }, 100);
+        }
+    
+        // Función para reventar globos
+        function burstBalloons() {
+            const balloons = document.querySelectorAll('.balloon');
+            
+            balloons.forEach((balloon, index) => {
+                setTimeout(() => {
+                    // Animación de explosión
+                    balloon.style.transform = 'scale(1.5)';
+                    balloon.style.opacity = '0';
+                    
+                    // Crear efecto de explosión
+                    const burstEffect = document.createElement('div');
+                    burstEffect.style.position = 'fixed';
+                    burstEffect.style.left = balloon.style.left;
+                    burstEffect.style.bottom = window.getComputedStyle(balloon).bottom;
+                    burstEffect.style.width = '30px';
+                    burstEffect.style.height = '30px';
+                    burstEffect.style.backgroundColor = balloon.style.backgroundColor;
+                    burstEffect.style.borderRadius = '50%';
+                    burstEffect.style.zIndex = '1000';
+                    burstEffect.style.boxShadow = '0 0 20px ' + balloon.style.backgroundColor;
+                    
+                    document.body.appendChild(burstEffect);
+                    
+                    // Animación de explosión
+                    burstEffect.animate(
+                        [
+                            { transform: 'scale(1)', opacity: 1 },
+                            { transform: 'scale(3)', opacity: 0 }
+                        ],
+                        {
+                            duration: 500,
+                            easing: 'ease-out'
+                        }
+                    );
+                    
+                    // Eliminar el efecto después de la animación
+                    setTimeout(() => {
+                        if (document.body.contains(burstEffect)) {
+                            document.body.removeChild(burstEffect);
+                        }
+                    }, 500);
+                    
+                }, index * 100); // Explotar con un pequeño retraso entre cada globo
+            });
+        }
+    
+        function acceptProposal() {
+            document.getElementById('proposal').style.display = 'none';
+            
+            // Primero reventar globos
+            burstBalloons();
+            
+            // Después de un segundo, mostrar espectáculo romántico
+            setTimeout(() => {
+                showRomanticSpectacle();
+            }, 1000);
+        }
+    
+        function rejectProposal() {
+            document.getElementById('proposal').style.display = 'none';
+            document.getElementById('rejection').style.display = 'block';
+            document.getElementById('rejection').scrollIntoView({ behavior: 'smooth' });
+        }
+    
+        function otherDate() {
+            document.getElementById('proposal').style.display = 'none';
+            document.getElementById('time-selection').style.display = 'block';
+            document.getElementById('time-selection').scrollIntoView({ behavior: 'smooth' });
+        }
+    
+        function reconsider() {
+            document.getElementById('rejection').style.display = 'none';
+            document.getElementById('proposal').style.display = 'block';
+            document.getElementById('proposal').scrollIntoView({ behavior: 'smooth' });
+        }
+    
+        function confirmTime() {
+            var selectedTime = document.getElementById('relationship-time').value;
+            if (selectedTime) {
+                document.getElementById('time-selection').style.display = 'none';
+                
+                // Primero reventar globos
+                burstBalloons();
+                
+                // Después de un segundo, mostrar espectáculo romántico
+                setTimeout(() => {
+                    showRomanticSpectacle();
+                    
+                    // Actualizar el mensaje de celebración con la hora seleccionada
+                    var celebrationMsg = document.querySelector('#celebration h2');
+                    celebrationMsg.innerHTML = '¡SOMOS NOVIOS OFICIALMENTE DESDE LAS ' + formatTime(selectedTime) + '! ❤️';
+                }, 1000);
+            }
+        }
+    
+        function formatTime(timeString) {
+            var timeParts = timeString.split(':');
+            var hours = parseInt(timeParts[0]);
+            var minutes = timeParts[1];
+            var ampm = hours >= 12 ? 'PM' : 'AM';
+            
+            hours = hours % 12;
+            hours = hours ? hours : 12; // la hora '0' debe ser '12'
+            
+            return hours + ':' + minutes + ' ' + ampm;
+        }
+    
+        function createHearts() {
+            var container = document.getElementById('celebration-hearts');
+            container.innerHTML = '';
+            
+            for (let i = 0; i < 40; i++) {
+                let heart = document.createElement('div');
+                heart.innerHTML = '❤️';
+                heart.style.position = 'absolute';
+                heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.top = Math.random() * 300 + 'px';
+                heart.style.opacity = Math.random() * 0.5 + 0.5;
+                heart.style.animation = 'float ' + (Math.random() * 6 + 4) + 's ease-in-out infinite';
+                heart.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(heart);
+            }
+        }
+    
+        function createMoreBalloons() {
+            for (let i = 0; i < 30; i++) {
+                let balloon = document.createElement('div');
+                balloon.className = 'balloon';
+                balloon.style.left = Math.random() * 100 + 'vw';
+                balloon.style.animationDelay = Math.random() * 5 + 's';
+                balloon.style.backgroundColor = getRandomColor();
+                document.body.appendChild(balloon);
+            }
+        }
+    
+        function createMoreConfetti() {
+            for (let i = 0; i < 100; i++) {
+                let confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.animationDelay = Math.random() * 5 + 's';
+                confetti.style.backgroundColor = getRandomColor();
+                document.body.appendChild(confetti);
+            }
+        }
+    
+        // Añadir al CSS existente
+        document.head.insertAdjacentHTML('beforeend', `
+        <style>
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+    
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    
+        @keyframes firework {
+            0% { transform: translate(0, 0); opacity: 1; }
+            100% { transform: translate(var(--dx), var(--dy)); opacity: 0; }
+        }
+    
+        @keyframes fallingHeart {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(360deg); }
+        }
+        </style>
+        `);
+    
+        // Obtener color aleatorio
+        function getRandomColor() {
+            const colors = ['#ff5c9d', '#ff9eb9', '#9d7eff', '#7effcb', '#ffce7e', '#ff7e7e', '#7ea9ff'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+        
+        // Mostrar resultado principal
+        function showMainResult(id) {
+            // Ocultar todos los resultados
+            document.querySelectorAll('.result').forEach(function(el) {
+                el.style.display = 'none';
+            });
+            
+            // Mostrar el resultado seleccionado
+            document.getElementById(id).style.display = 'block';
+            
+            // Desplazarse suavemente hasta el resultado
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Mostrar subresultado
+        function showSubResult(mainId, subId) {
+            // Ocultar todos los subresultados del resultado principal
+            document.querySelectorAll('#' + mainId + ' .sub-result').forEach(function(el) {
+                el.style.display = 'none';
+            });
+            
+            // Ocultar opciones principales
+            document.querySelectorAll('#' + mainId + ' .sub-option').forEach(function(el) {
+                el.style.display = 'none';
+            });
+            
+            // Mostrar el subresultado seleccionado
+            document.getElementById(subId).style.display = 'block';
+            
+            // Desplazarse suavemente hasta el subresultado
+            document.getElementById(subId).scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Volver a opciones principales
+        function backToMainOption(mainId) {
+            // Ocultar todos los subresultados
+            document.querySelectorAll('#' + mainId + ' .sub-result').forEach(function(el) {
+                el.style.display = 'none';
+            });
+            
+            // Mostrar opciones principales
+            document.querySelectorAll('#' + mainId + ' .sub-option').forEach(function(el) {
+                el.style.display = 'block';
+            });
+            
+            // Desplazarse suavemente hasta el inicio del resultado principal
+            document.getElementById(mainId).scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Iniciar animaciones al cargar la página
+        window.onload = function() {
+            createBalloons();
+            createConfetti();
+        };
+    </script>
+    
+    
+    
+</body>
+</html>
